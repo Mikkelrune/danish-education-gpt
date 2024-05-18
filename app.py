@@ -18,7 +18,6 @@ def get_pdf_text(pdf_docs):
             text += page.extract_text()
     return text
 
-
 def get_text_chunks(text):
     text_splitter = CharacterTextSplitter(
         separator="\n",
@@ -29,17 +28,19 @@ def get_text_chunks(text):
     chunks = text_splitter.split_text(text)
     return chunks
 
-
 def get_vectorstore(text_chunks):
     embeddings = OpenAIEmbeddings()
     # embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-xl")
     vectorstore = FAISS.from_texts(texts=text_chunks, embedding=embeddings)
     return vectorstore
 
-
 def get_conversation_chain(vectorstore):
-    llm = ChatOpenAI()
-    # llm = HuggingFaceHub(repo_id="google/flan-t5-xxl", model_kwargs={"temperature":0.5, "max_length":512})
+    llm = ChatOpenAI(
+        model="gpt-4",  # Specify the model name
+        max_tokens=1024,  # Set the maximum number of new tokens
+        temperature=0.01,  # Set the temperature for text generation
+        top_p=0.95  # Set the top-p sampling value
+    )
 
     memory = ConversationBufferMemory(
         memory_key='chat_history', return_messages=True)
@@ -49,7 +50,6 @@ def get_conversation_chain(vectorstore):
         memory=memory
     )
     return conversation_chain
-
 
 def handle_userinput(user_question):
     response = st.session_state.conversation({'question': user_question})
@@ -62,7 +62,6 @@ def handle_userinput(user_question):
         else:
             st.write(bot_template.replace(
                 "{{MSG}}", message.content), unsafe_allow_html=True)
-
 
 def main():
     load_dotenv()
@@ -98,7 +97,6 @@ def main():
                 # create conversation chain
                 st.session_state.conversation = get_conversation_chain(
                     vectorstore)
-
 
 if __name__ == '__main__':
     main()
