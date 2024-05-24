@@ -9,6 +9,7 @@ from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 from htmlTemplates import css, bot_template, user_template
 
+
 def get_pdf_text(pdf_docs):
     text = ""
     for pdf in pdf_docs:
@@ -39,7 +40,7 @@ def get_conversation_chain(vectorstore):
         max_tokens=1024,  # Set the maximum number of new tokens
         temperature=0.01,  # Set the temperature for text generation
         top_p=0.95,  # Set the top-p sampling value
-        openai_api_key="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"
+        openai_api_key='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'
     )
 
     memory = ConversationBufferMemory(
