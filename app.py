@@ -39,8 +39,8 @@ def get_conversation_chain(vectorstore):
         model="gpt-4",  # Specify the model name
         max_tokens=1024,  # Set the maximum number of new tokens
         temperature=0.01,  # Set the temperature for text generation
-        top_p=0.95,  # Set the top-p sampling value
-        openai_api_key='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'
+        top_p=0.95  # Set the top-p sampling value
+
     )
 
     memory = ConversationBufferMemory(
